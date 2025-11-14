@@ -7,28 +7,15 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 
 public class AuthController {
 
-    @FXML private Text headerText;
-    @FXML private Text loginLabel;
     @FXML private TextField loginField;
-    @FXML private Text passwordLabel;
     @FXML private PasswordField passwordField;
     @FXML private Button loginButton;
     @FXML private Button registerButton;
 
     private DbConnection dbConnection = new DbConnection();
-
-    @FXML
-    public void initialize() {
-        headerText.setText("Вход");
-        loginLabel.setText("Login");
-        passwordLabel.setText("Password");
-        loginButton.setText("Login");
-        registerButton.setText("Регистрация");
-    }
 
     @FXML
     private void handleLogin() {
@@ -52,22 +39,29 @@ public class AuthController {
     @FXML
     private void handleRegistration() {
         TextField fioField = new TextField();
-        TextField loginField = new TextField();
-        PasswordField passwordField = new PasswordField();
+        TextField newLoginField = new TextField();
+        PasswordField newPasswordField = new PasswordField();
 
         javafx.scene.control.Dialog<Boolean> dialog = new javafx.scene.control.Dialog<>();
         dialog.setTitle("Регистрация");
 
-        javafx.scene.control.ButtonType registerButtonType = new javafx.scene.control.ButtonType("Зарегистрировать", javafx.scene.control.ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(registerButtonType, javafx.scene.control.ButtonType.CANCEL);
+        javafx.scene.control.ButtonType registerButtonType =
+                new javafx.scene.control.ButtonType("Зарегистрировать",
+                        javafx.scene.control.ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(registerButtonType,
+                javafx.scene.control.ButtonType.CANCEL);
 
         javafx.scene.layout.GridPane grid = new javafx.scene.layout.GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new javafx.geometry.Insets(20, 10, 10, 10));
+
         grid.add(new javafx.scene.control.Label("ФИО:"), 0, 0);
         grid.add(fioField, 1, 0);
         grid.add(new javafx.scene.control.Label("Логин:"), 0, 1);
-        grid.add(loginField, 1, 1);
+        grid.add(newLoginField, 1, 1);
         grid.add(new javafx.scene.control.Label("Пароль:"), 0, 2);
-        grid.add(passwordField, 1, 2);
+        grid.add(newPasswordField, 1, 2);
 
         dialog.getDialogPane().setContent(grid);
 
@@ -75,7 +69,7 @@ public class AuthController {
 
         if (result.isPresent() && result.get()) {
             try {
-                dbConnection.addUser(fioField.getText(), loginField.getText(), passwordField.getText());
+                dbConnection.addUser(fioField.getText(), newLoginField.getText(), newPasswordField.getText());
                 showAlert("Успех", "Пользователь зарегистрирован");
             } catch (Exception e) {
                 showAlert("Ошибка", "Ошибка регистрации");

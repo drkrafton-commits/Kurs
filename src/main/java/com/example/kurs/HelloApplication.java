@@ -7,27 +7,20 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class HelloApplication extends Application {
-
     @Override
     public void start(Stage primaryStage) {
         try {
-            // Загружаем FXML файл
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/kurs/auth-window.fxml"));
-            Parent root = loader.load();
-
-            // Создаем сцену с новыми размерами 440x956
-            Scene scene = new Scene(root, 440, 956);
-
-            // Настраиваем окно
-            primaryStage.setTitle("Kurs - Авторизация");
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/kurs/auth-window.fxml"));
+            Scene scene = new Scene(root, 440, 600); // Уменьшена высота
+            primaryStage.setTitle("Авторизация");
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);
-            primaryStage.show();
 
+            // Центрируем окно на экране
+            primaryStage.centerOnScreen();
+            primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();
-            // Простой вывод ошибки в консоль
-            System.err.println("Ошибка загрузки FXML: " + e.getMessage());
         }
     }
 
