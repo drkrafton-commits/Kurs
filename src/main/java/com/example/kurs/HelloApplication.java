@@ -15,7 +15,7 @@ public class HelloApplication extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/kurs/auth-window.fxml"));
             Parent root = loader.load();
 
-            // Создаем сцену
+            // Создаем сцену с новыми размерами 440x956
             Scene scene = new Scene(root, 440, 956);
 
             // Настраиваем окно
@@ -26,20 +26,12 @@ public class HelloApplication extends Application {
 
         } catch (Exception e) {
             e.printStackTrace();
-            showErrorAlert("Ошибка загрузки", "Не удалось загрузить интерфейс: " + e.getMessage());
+            // Простой вывод ошибки в консоль
+            System.err.println("Ошибка загрузки FXML: " + e.getMessage());
         }
     }
 
-    private void showErrorAlert(String title, String message) {
-        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
     public static void main(String[] args) {
-        // Запускаем JavaFX приложение
         launch(args);
     }
 }
