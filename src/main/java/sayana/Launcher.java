@@ -1,4 +1,4 @@
-package com.example.kurs;
+package sayana;
 
 public class Launcher {
     public static void main(String[] args) {

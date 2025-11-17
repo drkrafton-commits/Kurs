@@ -8,15 +8,11 @@
 
 <Pane xmlns="http://javafx.com/javafx/17.0.2"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.example.kurs.AuthController"
+      fx:controller="sayana.Controllers.AuthController"
       prefWidth="440"
       prefHeight="600"
       style="-fx-background-color: #FF6E1A;">
 
-    <!-- Заголовок Вход -->
-    <Text layoutX="0" layoutY="80" text="Вход"
-          style="-fx-font-family: 'Arial'; -fx-font-size: 36px; -fx-font-weight: bold; -fx-text-alignment: center;"
-          wrappingWidth="440"/>
 
     <!-- Поле логина -->
     <Text layoutX="0" layoutY="140" text="Login"

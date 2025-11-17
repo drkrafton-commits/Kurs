@@ -3,6 +3,8 @@ module com.example.kurs {
     requires javafx.fxml;
     requires java.sql;
 
-    opens com.example.kurs to javafx.fxml;
-    exports com.example.kurs;
+    opens sayana to javafx.fxml;
+    exports sayana;
+    exports sayana.Controllers;
+    opens sayana.Controllers to javafx.fxml;
 }

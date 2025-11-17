@@ -1,6 +1,6 @@
-package com.example.kurs.DAO;
+package sayana.DAO;
 
-import com.example.kurs.models.UserType;
+import sayana.models.UserType;
 import java.sql.*;
 
 public class DbConnection {

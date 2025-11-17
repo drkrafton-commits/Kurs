@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="sayana.Controllers.MainController"
+            prefWidth="440"
+            prefHeight="600"
+            style="-fx-background-color: #f0f8ff;">
+
+<!--    <Text layoutX="0" layoutY="80" text="Главное меню"-->
+<!--          style="-fx-font-family: 'Arial'; -fx-font-size: 32px; -fx-font-weight: bold; -fx-text-alignment: center;"-->
+<!--          wrappingWidth="440"/>-->
+
+
+<!--    &lt;!&ndash; Информация о пользователе &ndash;&gt;-->
+<!--    <Label fx:id="userInfoLabel" layoutX="50" layoutY="120"-->
+<!--           style="-fx-font-family: 'Arial'; -fx-font-size: 18px; -fx-text-fill: #333333;"/>-->
+
+<!--    &lt;!&ndash; Приветствие &ndash;&gt;-->
+<!--    <Text fx:id="welcomeText" layoutX="0" layoutY="250"-->
+<!--          style="-fx-font-family: 'Arial'; -fx-font-size: 24px; -fx-font-weight: bold; -fx-fill: #2E8B57; -fx-text-alignment: center;"-->
+<!--          wrappingWidth="440"/>-->
+
+<!--    &lt;!&ndash; Кнопка выхода по центру &ndash;&gt;-->
+<!--    <Button fx:id="logoutButton" layoutX="170" layoutY="320" prefWidth="100" prefHeight="40"-->
+<!--            style="-fx-background-color: #FF6E1A; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-border-radius: 8px; -fx-background-radius: 8px;"-->
+<!--            text="Выйти"-->
+<!--            onAction="#handleLogout"/>-->
+
+
+</AnchorPane>

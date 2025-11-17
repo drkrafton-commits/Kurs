@@ -1,4 +1,4 @@
-package com.example.kurs.models;
+package sayana.models;
 
 public class UserType {
     private int id;

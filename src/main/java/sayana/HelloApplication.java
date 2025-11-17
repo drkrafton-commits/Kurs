@@ -1,4 +1,4 @@
-package com.example.kurs;
+package sayana;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,17 +10,18 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/com/example/kurs/auth-window.fxml"));
-            Scene scene = new Scene(root, 440, 600); // Уменьшена высота
+            // Используем getResource с правильным путем
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/auth-window.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root, 440, 600);
             primaryStage.setTitle("Авторизация");
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);
-
-            // Центрируем окно на экране
             primaryStage.centerOnScreen();
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();
+            System.err.println("Ошибка загрузки FXML: " + e.getMessage());
         }
     }
 
