@@ -10,13 +10,14 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            // Используем getResource с правильным путем
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/auth-window.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root, 440, 600);
             primaryStage.setTitle("Авторизация");
             primaryStage.setScene(scene);
-            primaryStage.setResizable(false);
+            primaryStage.setResizable(true); // Разрешаем изменение размера
+            primaryStage.setMinWidth(400); // Минимальная ширина
+            primaryStage.setMinHeight(500); // Минимальная высота
             primaryStage.centerOnScreen();
             primaryStage.show();
         } catch (Exception e) {

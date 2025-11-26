@@ -29,13 +29,12 @@ public class AuthController {
         try {
             UserType user = dbConnection.authenticate(username, password);
             if (user != null) {
-//                showAlert("Успех", "Вход выполнен: " + user.getFio());
                 openMainWindow(user);
             } else {
                 showAlert("Ошибка", "Неверный логин или пароль");
             }
         } catch (Exception e) {
-            showAlert("Ошибка", "Ошибка базы данных");
+            showAlert("Ошибка", "Ошибка базы данных: " + e.getMessage());
         }
     }
 
@@ -47,13 +46,16 @@ public class AuthController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/main-window.fxml"));
             Parent root = loader.load();
 
-//            MainController mainController = loader.getController();
-//            mainController.setUser(user);
+            // Получаем контроллер и передаем пользователя
+            MainController mainController = loader.getController();
+            mainController.setUser(user);
 
             Stage mainStage = new Stage();
-            mainStage.setTitle("Главное меню");
-            mainStage.setScene(new Scene(root, 440, 600));
-            mainStage.setResizable(false);
+            mainStage.setTitle("Главное меню - Цветочный магазин");
+            mainStage.setScene(new Scene(root, 800, 900)); // Увеличиваем начальный размер
+            mainStage.setResizable(true); // Разрешаем растягивание
+            mainStage.setMinWidth(600); // Минимальная ширина
+            mainStage.setMinHeight(700); // Минимальная высота
             mainStage.show();
 
         } catch (Exception e) {
@@ -64,9 +66,12 @@ public class AuthController {
 
     @FXML
     private void handleRegistration() {
-        TextField fioField = new TextField();
-        TextField newLoginField = new TextField();
-        PasswordField newPasswordField = new PasswordField();
+        // Создаем поля для ввода данных
+        TextField fullNameField = new TextField();
+        TextField usernameField = new TextField();
+        PasswordField passwordField = new PasswordField();
+        TextField emailField = new TextField();
+        TextField phoneField = new TextField();
 
         javafx.scene.control.Dialog<String> dialog = new javafx.scene.control.Dialog<>();
         dialog.setTitle("Регистрация");
@@ -83,12 +88,17 @@ public class AuthController {
         grid.setVgap(10);
         grid.setPadding(new javafx.geometry.Insets(20, 10, 10, 10));
 
+        // Добавляем все необходимые поля
         grid.add(new javafx.scene.control.Label("ФИО:"), 0, 0);
-        grid.add(fioField, 1, 0);
+        grid.add(fullNameField, 1, 0);
         grid.add(new javafx.scene.control.Label("Логин:"), 0, 1);
-        grid.add(newLoginField, 1, 1);
+        grid.add(usernameField, 1, 1);
         grid.add(new javafx.scene.control.Label("Пароль:"), 0, 2);
-        grid.add(newPasswordField, 1, 2);
+        grid.add(passwordField, 1, 2);
+        grid.add(new javafx.scene.control.Label("Email:"), 0, 3);
+        grid.add(emailField, 1, 3);
+        grid.add(new javafx.scene.control.Label("Телефон:"), 0, 4);
+        grid.add(phoneField, 1, 4);
 
         dialog.getDialogPane().setContent(grid);
 
@@ -103,31 +113,51 @@ public class AuthController {
         java.util.Optional<String> result = dialog.showAndWait();
 
         if (result.isPresent() && result.get().equals("register")) {
-            String fio = fioField.getText().trim();
-            String login = newLoginField.getText().trim();
-            String password = newPasswordField.getText().trim();
+            String fullName = fullNameField.getText().trim();
+            String username = usernameField.getText().trim();
+            String password = passwordField.getText().trim();
+            String email = emailField.getText().trim();
+            String phone = phoneField.getText().trim();
 
-            if (fio.isEmpty() || login.isEmpty() || password.isEmpty()) {
-                showAlert("Ошибка", "Все поля должны быть заполнены");
+            // Проверка обязательных полей
+            if (fullName.isEmpty() || username.isEmpty() || password.isEmpty()) {
+                showAlert("Ошибка", "ФИО, логин и пароль обязательны для заполнения");
+                return;
+            }
+
+            // Проверка email (если заполнен)
+            if (!email.isEmpty() && !isValidEmail(email)) {
+                showAlert("Ошибка", "Введите корректный email адрес");
                 return;
             }
 
             try {
-                boolean success = dbConnection.addUser(fio, login, password);
+                boolean success = dbConnection.addUser(fullName, username, password, email, phone);
                 if (success) {
                     showAlert("Успех", "Пользователь успешно зарегистрирован");
+                    // Очищаем поля после успешной регистрации
+                    loginField.setText(username);
+                    this.passwordField.clear();
                 } else {
                     showAlert("Ошибка", "Не удалось зарегистрировать пользователя");
                 }
             } catch (Exception e) {
                 showAlert("Ошибка", "Ошибка при регистрации: " + e.getMessage());
+                e.printStackTrace();
             }
         }
+    }
+
+    // Метод для проверки email
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        return email.matches(emailRegex);
     }
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
+        alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
