@@ -46,16 +46,16 @@ public class AuthController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/main-window.fxml"));
             Parent root = loader.load();
 
-            // Получаем контроллер и передаем пользователя
+            // Передаем пользователя в главный контроллер
             MainController mainController = loader.getController();
             mainController.setUser(user);
 
             Stage mainStage = new Stage();
             mainStage.setTitle("Главное меню - Цветочный магазин");
-            mainStage.setScene(new Scene(root, 800, 900)); // Увеличиваем начальный размер
-            mainStage.setResizable(true); // Разрешаем растягивание
-            mainStage.setMinWidth(600); // Минимальная ширина
-            mainStage.setMinHeight(700); // Минимальная высота
+            mainStage.setScene(new Scene(root, 800, 900));
+            mainStage.setResizable(true);
+            mainStage.setMinWidth(600);
+            mainStage.setMinHeight(700);
             mainStage.show();
 
         } catch (Exception e) {
@@ -72,6 +72,9 @@ public class AuthController {
         PasswordField passwordField = new PasswordField();
         TextField emailField = new TextField();
         TextField phoneField = new TextField();
+        TextField innField = new TextField();
+        TextField pasportField = new TextField();
+        TextField birthField = new TextField();
 
         javafx.scene.control.Dialog<String> dialog = new javafx.scene.control.Dialog<>();
         dialog.setTitle("Регистрация");
@@ -88,7 +91,6 @@ public class AuthController {
         grid.setVgap(10);
         grid.setPadding(new javafx.geometry.Insets(20, 10, 10, 10));
 
-        // Добавляем все необходимые поля
         grid.add(new javafx.scene.control.Label("ФИО:"), 0, 0);
         grid.add(fullNameField, 1, 0);
         grid.add(new javafx.scene.control.Label("Логин:"), 0, 1);
@@ -99,10 +101,15 @@ public class AuthController {
         grid.add(emailField, 1, 3);
         grid.add(new javafx.scene.control.Label("Телефон:"), 0, 4);
         grid.add(phoneField, 1, 4);
+        grid.add(new javafx.scene.control.Label("ИНН:"), 0, 5);
+        grid.add(innField, 1, 5);
+        grid.add(new javafx.scene.control.Label("Номер паспорта:"), 0, 6);
+        grid.add(pasportField, 1, 6);
+        grid.add(new javafx.scene.control.Label("Дата рождения:"), 0, 7);
+        grid.add(birthField, 1, 7);
 
         dialog.getDialogPane().setContent(grid);
 
-        // Упрощенная обработка результата
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == registerButtonType) {
                 return "register";
@@ -118,24 +125,36 @@ public class AuthController {
             String password = passwordField.getText().trim();
             String email = emailField.getText().trim();
             String phone = phoneField.getText().trim();
+            String inn = innField.getText().trim();
+            String pasport = pasportField.getText().trim();
+            Integer birth = Integer.valueOf(birthField.getText().trim());
 
-            // Проверка обязательных полей
             if (fullName.isEmpty() || username.isEmpty() || password.isEmpty()) {
                 showAlert("Ошибка", "ФИО, логин и пароль обязательны для заполнения");
                 return;
             }
 
-            // Проверка email (если заполнен)
             if (!email.isEmpty() && !isValidEmail(email)) {
                 showAlert("Ошибка", "Введите корректный email адрес");
                 return;
             }
 
             try {
-                boolean success = dbConnection.addUser(fullName, username, password, email, phone);
+                // Проверяем, не существует ли уже такой username
+                if (dbConnection.checkUsernameExists(username)) {
+                    showAlert("Ошибка", "Пользователь с таким логином уже существует");
+                    return;
+                }
+
+                // Проверяем, не существует ли уже такой email
+                if (!email.isEmpty() && dbConnection.checkEmailExists(email)) {
+                    showAlert("Ошибка", "Пользователь с таким email уже существует");
+                    return;
+                }
+
+                boolean success = dbConnection.addUser(fullName, username, password, email, phone, inn, pasport, birth);
                 if (success) {
                     showAlert("Успех", "Пользователь успешно зарегистрирован");
-                    // Очищаем поля после успешной регистрации
                     loginField.setText(username);
                     this.passwordField.clear();
                 } else {
@@ -148,7 +167,6 @@ public class AuthController {
         }
     }
 
-    // Метод для проверки email
     private boolean isValidEmail(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
         return email.matches(emailRegex);

@@ -13,11 +13,11 @@ public class HelloApplication extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/auth-window.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root, 440, 600);
-            primaryStage.setTitle("Авторизация");
+            primaryStage.setTitle("Авторизация - Цветочный магазин");
             primaryStage.setScene(scene);
-            primaryStage.setResizable(true); // Разрешаем изменение размера
-            primaryStage.setMinWidth(400); // Минимальная ширина
-            primaryStage.setMinHeight(500); // Минимальная высота
+            primaryStage.setResizable(true);
+            primaryStage.setMinWidth(400);
+            primaryStage.setMinHeight(500);
             primaryStage.centerOnScreen();
             primaryStage.show();
         } catch (Exception e) {

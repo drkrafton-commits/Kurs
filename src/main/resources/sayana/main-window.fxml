@@ -12,16 +12,17 @@
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="sayana.Controllers.MainController"
+            style="-fx-background-color: white;"
             stylesheets="@styles.css">
 
-    <!-- Основной контейнер с градиентным фоном -->
+    <!-- Основной контейнер -->
     <VBox fx:id="mainContainer" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
           AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
-          style="-fx-background-color: linear-gradient(91.89deg, #FF6E1A 0%, #737373 100%);">
+          style="-fx-background-color: white;">
 
         <!-- Верхняя панель с информацией пользователя -->
         <HBox fx:id="topPanel" spacing="20" alignment="CENTER_LEFT"
-              style="-fx-background-color: rgba(0,0,0,0.1); -fx-padding: 15;">
+              style="-fx-background-color: linear-gradient(to bottom right, #5C5B61, #1A573A); -fx-padding: 15; -fx-background-radius: 0 0 20 20;">
             <VBox spacing="5" VBox.vgrow="ALWAYS">
                 <Text fx:id="welcomeText" style="-fx-font-family: 'Arial'; -fx-font-size: 18px; -fx-font-weight: bold; -fx-fill: white;"/>
                 <Text fx:id="userInfoLabel" style="-fx-font-family: 'Arial'; -fx-font-size: 12px; -fx-fill: white;"
@@ -29,12 +30,12 @@
             </VBox>
             <Region HBox.hgrow="ALWAYS"/>
             <Button fx:id="logoutButton" text="Выход"
-                    style="-fx-background-color: #D9A520; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 16;"
+                    styleClass="button-gradient"
                     onAction="#handleLogout"/>
         </HBox>
 
         <!-- Основная область меню -->
-        <VBox fx:id="menuContainer" spacing="20" style="-fx-padding: 30;" VBox.vgrow="ALWAYS">
+        <VBox fx:id="menuContainer" spacing="20" style="-fx-padding: 30; -fx-background-color: white;" VBox.vgrow="ALWAYS">
 
             <!-- Карточка Цветы -->
             <HBox fx:id="flowersCard" styleClass="menu-card"
@@ -42,11 +43,11 @@
                 <Rectangle width="80" height="80" arcWidth="20" arcHeight="20"
                            style="-fx-fill: #D9D9D9;"/>
                 <VBox spacing="5" style="-fx-padding: 0 0 0 20;" VBox.vgrow="ALWAYS">
-                    <Text text="Цветы" styleClass="menu-title"/>
-                    <Text text="Свежие букеты и композиции" styleClass="menu-subtitle"/>
+                    <Text text="Цветы" style="-fx-font-family: 'Arial'; -fx-font-weight: bold; -fx-font-size: 24px; -fx-fill: #000000;"/>
+                    <Text text="Свежие букеты и композиции" style="-fx-font-family: 'Arial'; -fx-font-size: 14px; -fx-fill: #000000;"/>
                 </VBox>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Text text="›" styleClass="menu-arrow"/>
+                <Text text="›" style="-fx-font-family: 'Arial'; -fx-font-size: 36px; -fx-fill: #000000; -fx-font-weight: bold;"/>
             </HBox>
 
             <!-- Карточка Растения -->
@@ -55,11 +56,11 @@
                 <Rectangle width="80" height="80" arcWidth="20" arcHeight="20"
                            style="-fx-fill: #D9D9D9;"/>
                 <VBox spacing="5" style="-fx-padding: 0 0 0 20;" VBox.vgrow="ALWAYS">
-                    <Text text="Растения" styleClass="menu-title"/>
-                    <Text text="Комнатные и садовые растения" styleClass="menu-subtitle"/>
+                    <Text text="Растения" style="-fx-font-family: 'Arial'; -fx-font-weight: bold; -fx-font-size: 24px; -fx-fill: #000000;"/>
+                    <Text text="Комнатные и садовые растения" style="-fx-font-family: 'Arial'; -fx-font-size: 14px; -fx-fill: #000000;"/>
                 </VBox>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Text text="›" styleClass="menu-arrow"/>
+                <Text text="›" style="-fx-font-family: 'Arial'; -fx-font-size: 36px; -fx-fill: #000000; -fx-font-weight: bold;"/>
             </HBox>
 
             <!-- Карточка Доставка -->
@@ -68,11 +69,11 @@
                 <Rectangle width="80" height="80" arcWidth="20" arcHeight="20"
                            style="-fx-fill: #D9D9D9;"/>
                 <VBox spacing="5" style="-fx-padding: 0 0 0 20;" VBox.vgrow="ALWAYS">
-                    <Text text="Доставка" styleClass="menu-title"/>
-                    <Text text="Быстрая доставка по городу" styleClass="menu-subtitle"/>
+                    <Text text="Доставка" style="-fx-font-family: 'Arial'; -fx-font-weight: bold; -fx-font-size: 24px; -fx-fill: #000000;"/>
+                    <Text text="Быстрая доставка по городу" style="-fx-font-family: 'Arial'; -fx-font-size: 14px; -fx-fill: #000000;"/>
                 </VBox>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Text text="›" styleClass="menu-arrow"/>
+                <Text text="›" style="-fx-font-family: 'Arial'; -fx-font-size: 36px; -fx-fill: #000000; -fx-font-weight: bold;"/>
             </HBox>
 
             <!-- Карточка Профиль -->
@@ -81,57 +82,57 @@
                 <Rectangle width="80" height="80" arcWidth="20" arcHeight="20"
                            style="-fx-fill: #D9D9D9;"/>
                 <VBox spacing="5" style="-fx-padding: 0 0 0 20;" VBox.vgrow="ALWAYS">
-                    <Text text="Профиль" styleClass="menu-title"/>
-                    <Text text="Личные данные и настройки" styleClass="menu-subtitle"/>
+                    <Text text="Профиль" style="-fx-font-family: 'Arial'; -fx-font-weight: bold; -fx-font-size: 24px; -fx-fill: #000000;"/>
+                    <Text text="Личные данные и настройки" style="-fx-font-family: 'Arial'; -fx-font-size: 14px; -fx-fill: #000000;"/>
                 </VBox>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Text text="›" styleClass="menu-arrow"/>
+                <Text text="›" style="-fx-font-family: 'Arial'; -fx-font-size: 36px; -fx-fill: #000000; -fx-font-weight: bold;"/>
             </HBox>
 
         </VBox>
 
         <!-- Нижняя панель навигации -->
         <HBox fx:id="bottomNav" spacing="0" alignment="CENTER"
-              style="-fx-background-color: linear-gradient(152.51deg, #5C5B61 15.92%, #1A573A 61.47%); -fx-padding: 20;">
+              style="-fx-background-color: linear-gradient(to bottom right, #5C5B61, #1A573A); -fx-padding: 20;">
 
             <!-- Кнопка Профиль -->
             <VBox alignment="CENTER" spacing="5" HBox.hgrow="ALWAYS"
                   onMouseClicked="#handleProfileClick" styleClass="bottom-nav-item">
                 <Rectangle width="30" height="30" arcWidth="8" arcHeight="8"
-                           style="-fx-fill: transparent; -fx-stroke: #D9A520; -fx-stroke-width: 2;"/>
-                <Text text="Профиль" style="-fx-font-size: 10px; -fx-fill: #D9A520;"/>
+                           styleClass="nav-icon"/>
+                <Text text="Профиль" style="-fx-font-size: 10px; -fx-fill: white;"/>
             </VBox>
 
             <!-- Кнопка Поиск -->
             <VBox alignment="CENTER" spacing="5" HBox.hgrow="ALWAYS"
                   onMouseClicked="#handleSearchClick" styleClass="bottom-nav-item">
                 <Rectangle width="30" height="30" arcWidth="8" arcHeight="8"
-                           style="-fx-fill: transparent; -fx-stroke: #D9A520; -fx-stroke-width: 2;"/>
-                <Text text="Поиск" style="-fx-font-size: 10px; -fx-fill: #D9A520;"/>
+                           styleClass="nav-icon"/>
+                <Text text="Поиск" style="-fx-font-size: 10px; -fx-fill: white;"/>
             </VBox>
 
             <!-- Кнопка Главная -->
             <VBox alignment="CENTER" spacing="5" HBox.hgrow="ALWAYS"
                   onMouseClicked="#handleHomeClick" styleClass="bottom-nav-item">
                 <Rectangle width="40" height="40" arcWidth="12" arcHeight="12"
-                           style="-fx-fill: #D9A520;"/>
-                <Text text="Главная" style="-fx-font-size: 10px; -fx-fill: #D9A520;"/>
+                           styleClass="nav-icon-main"/>
+                <Text text="Главная" style="-fx-font-size: 10px; -fx-fill: white;"/>
             </VBox>
 
             <!-- Кнопка Корзина -->
             <VBox alignment="CENTER" spacing="5" HBox.hgrow="ALWAYS"
                   onMouseClicked="#handleCartClick" styleClass="bottom-nav-item">
                 <Rectangle width="30" height="30" arcWidth="8" arcHeight="8"
-                           style="-fx-fill: transparent; -fx-stroke: #D9A520; -fx-stroke-width: 2;"/>
-                <Text text="Корзина" style="-fx-font-size: 10px; -fx-fill: #D9A520;"/>
+                           styleClass="nav-icon"/>
+                <Text text="Корзина" style="-fx-font-size: 10px; -fx-fill: white;"/>
             </VBox>
 
             <!-- Кнопка Избранное -->
             <VBox alignment="CENTER" spacing="5" HBox.hgrow="ALWAYS"
                   onMouseClicked="#handleFavoritesClick" styleClass="bottom-nav-item">
                 <Rectangle width="30" height="30" arcWidth="8" arcHeight="8"
-                           style="-fx-fill: transparent; -fx-stroke: #D9A520; -fx-stroke-width: 2;"/>
-                <Text text="Избранное" style="-fx-font-size: 10px; -fx-fill: #D9A520;"/>
+                           styleClass="nav-icon"/>
+                <Text text="Избранное" style="-fx-font-size: 10px; -fx-fill: white;"/>
             </VBox>
 
         </HBox>

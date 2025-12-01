@@ -67,22 +67,22 @@ public class MainController {
     // Обработчики для карточек меню
     @FXML
     private void handleFlowersClick() {
-        showAlert("Цветы", "Переход в раздел цветов");
+        openWindow("/sayana/flowers-window.fxml", "Цветы - Цветочный магазин");
     }
 
     @FXML
     private void handlePlantsClick() {
-        showAlert("Растения", "Переход в раздел растений");
+        openWindow("/sayana/plants-window.fxml", "Растения - Цветочный магазин");
     }
 
     @FXML
     private void handleDeliveryClick() {
-        showAlert("Доставка", "Переход в раздел доставки");
+        openWindow("/sayana/delivery-window.fxml", "Доставка - Цветочный магазин");
     }
 
     @FXML
     private void handleProfileClick() {
-        showAlert("Профиль", "Переход в раздел профиля");
+        openWindow("/sayana/profile-window.fxml", "Профиль - Цветочный магазин");
     }
 
     // Обработчики для нижней навигации
@@ -93,7 +93,7 @@ public class MainController {
 
     @FXML
     private void handleHomeClick() {
-        showAlert("Главная", "Переход на главную");
+        // Уже на главной странице
     }
 
     @FXML
@@ -104,6 +104,28 @@ public class MainController {
     @FXML
     private void handleFavoritesClick() {
         showAlert("Избранное", "Открытие избранного");
+    }
+
+    private void openWindow(String fxmlPath, String title) {
+        try {
+            Stage currentStage = (Stage) logoutButton.getScene().getWindow();
+            currentStage.close();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+
+            Stage newStage = new Stage();
+            newStage.setTitle(title);
+            newStage.setScene(new Scene(root, 800, 900));
+            newStage.setResizable(true);
+            newStage.setMinWidth(600);
+            newStage.setMinHeight(700);
+            newStage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Ошибка", "Не удалось открыть окно: " + e.getMessage());
+        }
     }
 
     private void showAlert(String title, String message) {

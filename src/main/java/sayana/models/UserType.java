@@ -8,6 +8,9 @@ public class UserType {
     private String email;
     private String phone;
     private String userInfo;
+    private String inn;
+    private String pasport;
+    private Integer birth;
 
     // Конструктор для аутентификации
     public UserType(int userId, String fullName, String username, String passwordHash) {
@@ -19,7 +22,7 @@ public class UserType {
 
     // Полный конструктор
     public UserType(int userId, String fullName, String username, String passwordHash,
-                    String email, String phone, String userInfo) {
+                    String email, String phone, String userInfo, String inn, String pasport, Integer birth) {
         this.userId = userId;
         this.fullName = fullName;
         this.username = username;
@@ -27,6 +30,10 @@ public class UserType {
         this.email = email;
         this.phone = phone;
         this.userInfo = userInfo;
+        this.inn = inn;
+        this.pasport = pasport;
+        this.birth = birth;
+
     }
 
     // Геттеры
@@ -37,6 +44,9 @@ public class UserType {
     public String getEmail() { return email; }
     public String getPhone() { return phone; }
     public String getUserInfo() { return userInfo; }
+    public String getInn() { return inn; }
+    public String getPasport() { return pasport; }
+    public Integer getBirth() { return birth; }
 
     // Сеттеры
     public void setUserId(int userId) { this.userId = userId; }
@@ -46,6 +56,9 @@ public class UserType {
     public void setEmail(String email) { this.email = email; }
     public void setPhone(String phone) { this.phone = phone; }
     public void setUserInfo(String userInfo) { this.userInfo = userInfo; }
+    public void setInn(String inn) { this.inn = inn; }
+    public void setPasport(String pasport) { this.pasport = pasport; }
+    public void setBirth(Integer birth) { this.birth = birth; }
 
     @Override
     public String toString() {

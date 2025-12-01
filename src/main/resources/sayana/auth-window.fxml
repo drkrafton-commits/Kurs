@@ -11,7 +11,7 @@
       fx:controller="sayana.Controllers.AuthController"
       prefWidth="440"
       prefHeight="600"
-      style="-fx-background-color: #FF6E1A;">
+      >
 
 
     <!-- Поле логина -->

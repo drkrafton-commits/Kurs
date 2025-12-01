@@ -4,7 +4,7 @@
 
 /* Стили для карточек меню */
 .menu-card {
-    -fx-background-color: linear-gradient(152.51deg, #5C5B61 15.92%, #1A573A 61.47%);
+    -fx-background-color: linear-gradient(to bottom right, #5C5B61, #1A573A);
     -fx-background-radius: 20;
     -fx-padding: 25;
     -fx-cursor: hand;
@@ -14,7 +14,7 @@
 }
 
 .menu-card:hover {
-    -fx-background-color: linear-gradient(152.51deg, #6C6B71 15.92%, #2A675A 61.47%);
+    -fx-background-color: linear-gradient(to bottom right, #6C6B71, #2A675A);
     -fx-scale-x: 1.02;
     -fx-scale-y: 1.02;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 15, 0, 0, 6);
@@ -29,19 +29,19 @@
     -fx-font-family: 'Arial';
     -fx-font-weight: bold;
     -fx-font-size: 24px;
-    -fx-fill: #D9A520;
+    -fx-fill: #000000;
 }
 
 .menu-subtitle {
     -fx-font-family: 'Arial';
     -fx-font-size: 14px;
-    -fx-fill: rgba(255,255,255,0.8);
+    -fx-fill: #000000;
 }
 
 .menu-arrow {
     -fx-font-family: 'Arial';
     -fx-font-size: 36px;
-    -fx-fill: #D9A520;
+    -fx-fill: #000000;
     -fx-font-weight: bold;
 }
 
@@ -53,9 +53,41 @@
 }
 
 .bottom-nav-item:hover {
-    -fx-background-color: rgba(217, 165, 32, 0.1);
+    -fx-background-color: rgba(92, 91, 97, 0.1);
     -fx-border-radius: 10;
     -fx-background-radius: 10;
+}
+
+/* Текст в нижней навигации */
+.bottom-nav-text {
+    -fx-font-size: 10px;
+    -fx-fill: linear-gradient(to bottom right, #5C5B61, #1A573A);
+}
+
+/* Кнопки */
+.button-gradient {
+    -fx-background-color: linear-gradient(to bottom right, #5C5B61, #1A573A);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+}
+
+.button-gradient:hover {
+    -fx-background-color: linear-gradient(to bottom right, #6C6B71, #2A675A);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+}
+
+/* Иконки в нижней навигации */
+.nav-icon {
+    -fx-fill: transparent;
+    -fx-stroke: linear-gradient(to bottom right, #5C5B61, #1A573A);
+    -fx-stroke-width: 2;
+}
+
+.nav-icon-main {
+    -fx-fill: linear-gradient(to bottom right, #5C5B61, #1A573A);
 }
 
 /* Адаптивные стили */
@@ -87,16 +119,64 @@
     .menu-arrow {
         -fx-font-size: 42px;
     }
-}
+    .product-card {
+        -fx-background-color: white;
+        -fx-border-color: #e0e0e0;
+        -fx-border-width: 1;
+        -fx-border-radius: 10;
+        -fx-background-radius: 10;
+        -fx-padding: 15;
+        -fx-alignment: center;
+        -fx-spacing: 8;
+    }
 
-/* Responsive контейнеры */
-.responsive-vbox {
-    -fx-spacing: 20;
-    -fx-padding: 30;
-}
+    .product-card:hover {
+        -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);
+    }
 
-.responsive-hbox {
-    -fx-spacing: 15;
-    -fx-alignment: center-left;
-    -fx-padding: 20;
+    .button-small {
+        -fx-background-color: linear-gradient(to bottom right, #5C5B61, #1A573A);
+        -fx-text-fill: white;
+        -fx-font-size: 12px;
+        -fx-padding: 5 10;
+        -fx-background-radius: 5;
+    }
+
+    .button-gradient-large {
+        -fx-background-color: linear-gradient(to bottom right, #5C5B61, #1A573A);
+        -fx-text-fill: white;
+        -fx-font-weight: bold;
+        -fx-font-size: 16px;
+        -fx-padding: 12 24;
+        -fx-background-radius: 10;
+    }
+
+    .button-outline {
+        -fx-background-color: transparent;
+        -fx-text-fill: linear-gradient(to bottom right, #5C5B61, #1A573A);
+        -fx-border-color: linear-gradient(to bottom right, #5C5B61, #1A573A);
+        -fx-border-width: 2;
+        -fx-border-radius: 5;
+        -fx-background-radius: 5;
+        -fx-padding: 8 16;
+    }
+
+    .text-field-custom {
+        -fx-background-color: #f8f9fa;
+        -fx-border-color: #e0e0e0;
+        -fx-border-width: 1;
+        -fx-border-radius: 5;
+        -fx-background-radius: 5;
+        -fx-padding: 8 12;
+    }
+
+    .order-card {
+        -fx-background-color: #f8f9fa;
+        -fx-border-color: #e0e0e0;
+        -fx-border-width: 1;
+        -fx-border-radius: 8;
+        -fx-background-radius: 8;
+        -fx-padding: 12;
+        -fx-spacing: 5;
+    }
 }
