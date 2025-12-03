@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.scene.Node;
 
 public class MainController {
 
@@ -88,7 +89,7 @@ public class MainController {
     // Обработчики для нижней навигации
     @FXML
     private void handleSearchClick() {
-        showAlert("Поиск", "Открытие поиска");
+        openWindow("/sayana/admin-menu.fxml", "Админ-панель - Цветочный магазин");
     }
 
     @FXML
@@ -98,12 +99,12 @@ public class MainController {
 
     @FXML
     private void handleCartClick() {
-        showAlert("Корзина", "Открытие корзины");
+        openWindow("/sayana/cart-window.fxml", "Корзина - Цветочный магазин");
     }
 
     @FXML
     private void handleFavoritesClick() {
-        showAlert("Избранное", "Открытие избранного");
+        openWindow("/sayana/favorites-window.fxml", "Избранное - Цветочный магазин");
     }
 
     private void openWindow(String fxmlPath, String title) {
@@ -114,9 +115,41 @@ public class MainController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
 
+            Object controller = loader.getController();
+
+            if (controller != null) {
+                // Все контроллеры, которые требуют пользователя
+                if (controller instanceof ProfileController) {
+                    ((ProfileController) controller).setUser(currentUser);
+                }
+                else if (controller instanceof FlowersController) {
+                    ((FlowersController) controller).setUser(currentUser);
+                }
+                else if (controller instanceof PlantsController) {
+                    ((PlantsController) controller).setUser(currentUser);
+                }
+                else if (controller instanceof CartController) {
+                    ((CartController) controller).setUser(currentUser);
+                }
+                else if (controller instanceof FavoritesController) {
+                    ((FavoritesController) controller).setUser(currentUser);
+                }
+                else if (controller instanceof AdminMenuController) {
+                    ((AdminMenuController) controller).setUser(currentUser);
+                }
+            }
+
             Stage newStage = new Stage();
             newStage.setTitle(title);
-            newStage.setScene(new Scene(root, 800, 900));
+
+            int width = 800;
+            int height = 900;
+
+            if (fxmlPath.contains("admin")) {
+                width = 1000;
+            }
+
+            newStage.setScene(new Scene(root, width, height));
             newStage.setResizable(true);
             newStage.setMinWidth(600);
             newStage.setMinHeight(700);

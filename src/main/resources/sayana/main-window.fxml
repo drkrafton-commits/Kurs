@@ -108,7 +108,7 @@
                   onMouseClicked="#handleSearchClick" styleClass="bottom-nav-item">
                 <Rectangle width="30" height="30" arcWidth="8" arcHeight="8"
                            styleClass="nav-icon"/>
-                <Text text="Поиск" style="-fx-font-size: 10px; -fx-fill: white;"/>
+                <Text text="Админ" style="-fx-font-size: 10px; -fx-fill: white;"/>
             </VBox>
 
             <!-- Кнопка Главная -->

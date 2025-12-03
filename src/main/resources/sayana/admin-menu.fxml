@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="sayana.Controllers.AdminMenuController"
+            style="-fx-background-color: white;"
+            stylesheets="@styles.css">
+
+    <VBox AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+          style="-fx-background-color: white;">
+
+        <!-- Верхняя панель -->
+        <HBox spacing="20" alignment="CENTER_LEFT"
+              style="-fx-background-color: linear-gradient(to bottom right, #5C5B61, #1A573A); -fx-padding: 15;">
+            <Button text="← Назад"
+                    styleClass="button-gradient"
+                    onAction="#handleBack"/>
+            <Text text="Админ-панель - Управление продуктами"
+                  style="-fx-font-family: 'Arial'; -fx-font-size: 24px; -fx-font-weight: bold; -fx-fill: white;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+        </HBox>
+
+        <!-- Основное содержимое -->
+        <SplitPane dividerPositions="0.3" VBox.vgrow="ALWAYS">
+
+            <!-- Левая панель - Форма добавления -->
+            <ScrollPane fitToWidth="true">
+                <VBox spacing="20" style="-fx-padding: 20;">
+                    <Text text="Добавить/Изменить продукт"
+                          style="-fx-font-family: 'Arial'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-fill: #000000;"/>
+
+                    <VBox spacing="10">
+                        <Text text="Категория:" style="-fx-font-weight: bold; -fx-fill: #000000;"/>
+                        <ComboBox fx:id="categoryComboBox" styleClass="text-field-custom"/>
+
+                        <Text text="Название продукта:" style="-fx-font-weight: bold; -fx-fill: #000000;"/>
+                        <TextField fx:id="productNameField" promptText="Введите название" styleClass="text-field-custom"/>
+
+                        <Text text="Описание:" style="-fx-font-weight: bold; -fx-fill: #000000;"/>
+                        <TextArea fx:id="descriptionField" promptText="Введите описание"
+                                  styleClass="text-field-custom" wrapText="true" prefRowCount="3"/>
+
+                        <Text text="Цена:" style="-fx-font-weight: bold; -fx-fill: #000000;"/>
+                        <TextField fx:id="priceField" promptText="0.00" styleClass="text-field-custom"/>
+
+                        <Text text="Состав:" style="-fx-font-weight: bold; -fx-fill: #000000;"/>
+                        <TextField fx:id="compositionField" promptText="Введите состав" styleClass="text-field-custom"/>
+                    </VBox>
+
+                    <!-- Загрузка изображения -->
+                    <VBox spacing="10">
+                        <Text text="Изображение продукта:" style="-fx-font-weight: bold; -fx-fill: #000000;"/>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <ImageView fx:id="productImageView" fitWidth="100" fitHeight="100"
+                                       style="-fx-background-color: #f0f0f0; -fx-border-color: #e0e0e0; -fx-border-width: 1;"/>
+
+                            <VBox spacing="5">
+                                <Text fx:id="imagePathText" text="Изображение не выбрано"
+                                      style="-fx-font-size: 12px; -fx-fill: #666666;"/>
+                                <Button text="Выбрать изображение"
+                                        styleClass="button-small"
+                                        onAction="#handleSelectImage"/>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+
+                    <Button text="Добавить продукт"
+                            styleClass="button-gradient-large"
+                            onAction="#handleAddProduct"
+                            style="-fx-font-size: 16px;"/>
+                </VBox>
+            </ScrollPane>
+
+            <!-- Правая панель - Список продуктов -->
+            <ScrollPane fitToWidth="true">
+                <VBox spacing="20" style="-fx-padding: 20;">
+                    <Text text="Все продукты"
+                          style="-fx-font-family: 'Arial'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-fill: #000000;"/>
+
+                    <VBox fx:id="productsContainer" spacing="15"/>
+                </VBox>
+            </ScrollPane>
+
+        </SplitPane>
+    </VBox>
+
+</AnchorPane>

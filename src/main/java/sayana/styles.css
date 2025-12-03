@@ -82,12 +82,12 @@
 /* Иконки в нижней навигации */
 .nav-icon {
     -fx-fill: transparent;
-    -fx-stroke: linear-gradient(to bottom right, #5C5B61, #1A573A);
+    -fx-stroke: white;
     -fx-stroke-width: 2;
 }
 
 .nav-icon-main {
-    -fx-fill: linear-gradient(to bottom right, #5C5B61, #1A573A);
+    -fx-fill: white;
 }
 
 /* Адаптивные стили */
