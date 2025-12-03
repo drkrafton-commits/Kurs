@@ -134,6 +134,9 @@ public class MainController {
                 else if (controller instanceof FavoritesController) {
                     ((FavoritesController) controller).setUser(currentUser);
                 }
+                else if (controller instanceof DeliveryController) {
+                    ((DeliveryController) controller).setUser(currentUser);
+                }
                 else if (controller instanceof AdminMenuController) {
                     ((AdminMenuController) controller).setUser(currentUser);
                 }
