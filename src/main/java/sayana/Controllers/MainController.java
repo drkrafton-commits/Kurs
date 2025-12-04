@@ -1,5 +1,6 @@
 package sayana.Controllers;
 
+import javafx.stage.StageStyle;
 import sayana.models.UserType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -145,17 +146,15 @@ public class MainController {
             Stage newStage = new Stage();
             newStage.setTitle(title);
 
-            int width = 800;
-            int height = 900;
+            // УСТАНОВКА НА ВЕСЬ ЭКРАН
+            newStage.initStyle(StageStyle.DECORATED);
+            newStage.setMaximized(true); // ОТКРЫТЬ НА ВЕСЬ ЭКРАН
 
-            if (fxmlPath.contains("admin")) {
-                width = 1000;
-            }
+            // Устанавливаем минимальный размер
+            newStage.setMinWidth(1024);
+            newStage.setMinHeight(768);
 
-            newStage.setScene(new Scene(root, width, height));
-            newStage.setResizable(true);
-            newStage.setMinWidth(600);
-            newStage.setMinHeight(700);
+            newStage.setScene(new Scene(root));
             newStage.show();
 
         } catch (Exception e) {

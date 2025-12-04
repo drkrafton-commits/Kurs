@@ -46,16 +46,18 @@ public class AuthController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/main-window.fxml"));
             Parent root = loader.load();
 
-            // Передаем пользователя в главный контроллер
             MainController mainController = loader.getController();
             mainController.setUser(user);
 
             Stage mainStage = new Stage();
             mainStage.setTitle("Главное меню - Цветочный магазин");
-            mainStage.setScene(new Scene(root, 800, 900));
-            mainStage.setResizable(true);
-            mainStage.setMinWidth(600);
-            mainStage.setMinHeight(700);
+
+            // ОТКРЫТЬ НА ВЕСЬ ЭКРАН
+            mainStage.setMaximized(true);
+            mainStage.setMinWidth(1024);
+            mainStage.setMinHeight(768);
+
+            mainStage.setScene(new Scene(root));
             mainStage.show();
 
         } catch (Exception e) {
