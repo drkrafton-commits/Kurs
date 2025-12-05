@@ -7,15 +7,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.text.Text;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import javafx.scene.Node;
 
 public class MainController {
 
-    @FXML private Text userInfoLabel;
-    @FXML private Text welcomeText;
-    @FXML private javafx.scene.control.Button logoutButton;
+    @FXML private Label welcomeLabel;
+    @FXML private Label userInfoLabel;
+    @FXML private Button adminButton; // Добавляем кнопку админа
 
     private UserType currentUser;
 
@@ -37,22 +37,39 @@ public class MainController {
             userInfo.append("ФИО: ").append(currentUser.getFullName()).append(" | ");
             userInfo.append("Логин: ").append(currentUser.getUsername());
 
+            // Добавляем отображение роли
+            if (currentUser.isAdmin()) {
+                userInfo.append(" | Роль: Администратор");
+            }
+
             if (currentUser.getEmail() != null && !currentUser.getEmail().isEmpty()) {
                 userInfo.append(" | Email: ").append(currentUser.getEmail());
             }
 
             userInfoLabel.setText(userInfo.toString());
-            welcomeText.setText("Добро пожаловать, " + currentUser.getFullName() + "!");
+            welcomeLabel.setText("Добро пожаловать, " + currentUser.getFullName() + "!");
+
+            // Показываем или скрываем кнопку админа
+            if (currentUser.isAdmin() && adminButton != null) {
+                adminButton.setVisible(true);
+            } else if (adminButton != null) {
+                adminButton.setVisible(false);
+            }
         }
+    }
+    // Новый метод для открытия админ-панели
+    @FXML
+    private void handleAdminPanel() {
+        openWindow("/sayana/admin-menu.fxml", "Админ-панель - Цветочный магазин");
     }
 
     @FXML
     private void handleLogout() {
         try {
-            Stage currentStage = (Stage) logoutButton.getScene().getWindow();
+            Stage currentStage = (Stage) welcomeLabel.getScene().getWindow();
             currentStage.close();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/auth-window.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/auth.fxml"));
             Parent root = loader.load();
 
             Stage authStage = new Stage();
@@ -66,28 +83,31 @@ public class MainController {
         }
     }
 
-    // Обработчики для карточек меню
     @FXML
-    private void handleFlowersClick() {
-        openWindow("/sayana/flowers-window.fxml", "Цветы - Цветочный магазин");
+    private void handleFlowers() {
+        openWindow("/sayana/flowers.fxml", "Цветы - Цветочный магазин");
     }
 
     @FXML
-    private void handlePlantsClick() {
-        openWindow("/sayana/plants-window.fxml", "Растения - Цветочный магазин");
+    private void handlePlants() {
+        openWindow("/sayana/plants.fxml", "Растения - Цветочный магазин");
     }
 
     @FXML
-    private void handleDeliveryClick() {
-        openWindow("/sayana/orders-window.fxml", "Мои заказы - Цветочный магазин");
+    private void handleCart() {
+        openWindow("/sayana/cart.fxml", "Корзина - Цветочный магазин");
     }
 
     @FXML
-    private void handleProfileClick() {
-        openWindow("/sayana/profile-window.fxml", "Профиль - Цветочный магазин");
+    private void handleProfile() {
+        openWindow("/sayana/profile.fxml", "Профиль - Цветочный магазин");
     }
 
-    // Обработчики для нижней навигации
+    @FXML
+    private void handleOrders() {
+        openWindow("/sayana/orders.fxml", "Мои заказы - Цветочный магазин");
+    }
+
     @FXML
     private void handleSearchClick() {
         openWindow("/sayana/admin-menu.fxml", "Админ-панель - Цветочный магазин");
@@ -99,18 +119,13 @@ public class MainController {
     }
 
     @FXML
-    private void handleCartClick() {
-        openWindow("/sayana/cart-window.fxml", "Корзина - Цветочный магазин");
-    }
-
-    @FXML
     private void handleFavoritesClick() {
         openWindow("/sayana/favorites-window.fxml", "Избранное - Цветочный магазин");
     }
 
     private void openWindow(String fxmlPath, String title) {
         try {
-            Stage currentStage = (Stage) logoutButton.getScene().getWindow();
+            Stage currentStage = (Stage) welcomeLabel.getScene().getWindow();
             currentStage.close();
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));

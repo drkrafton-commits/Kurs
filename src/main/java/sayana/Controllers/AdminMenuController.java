@@ -298,7 +298,7 @@ public class AdminMenuController {
             Stage currentStage = (Stage) productsContainer.getScene().getWindow();
             currentStage.close();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/main-window.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/main.fxml"));
             Parent root = loader.load();
 
             MainController mainController = loader.getController();

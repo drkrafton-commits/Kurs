@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" spacing="30" xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="sayana.Controllers.AuthController"
+      style="-fx-background-color: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+
+    <padding>
+        <Insets top="60" right="40" bottom="60" left="40"/>
+    </padding>
+
+    <!-- Логотип -->
+    <VBox alignment="CENTER" spacing="10">
+        <Text text="🌸" style="-fx-font-size: 64px;"/>
+        <Text text="Цветочный магазин"
+              style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-fill: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);"/>
+        <Text text="Ваш источник красоты и уюта"
+              style="-fx-font-size: 14px; -fx-fill: rgba(255,255,255,0.8);"/>
+    </VBox>
+
+    <!-- Форма авторизации -->
+    <VBox style="-fx-background-color: white; -fx-background-radius: 20;
+                -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 20, 0, 0, 5);
+                -fx-padding: 40;"
+          spacing="25">
+
+        <Text text="Вход в систему"
+              style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-fill: #2d3436;"/>
+
+        <VBox spacing="15">
+            <TextField fx:id="usernameField" promptText="Введите логин"
+                       style="-fx-background-color: #f8f9fa; -fx-border-color: #e0e0e0;
+                             -fx-border-width: 1; -fx-border-radius: 10; -fx-padding: 12;"/>
+
+            <PasswordField fx:id="passwordField" promptText="Введите пароль"
+                           style="-fx-background-color: #f8f9fa; -fx-border-color: #e0e0e0;
+                                 -fx-border-width: 1; -fx-border-radius: 10; -fx-padding: 12;"/>
+        </VBox>
+
+        <Button text="Войти" fx:id="loginButton" onAction="#handleLogin"
+                style="-fx-background-color: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                      -fx-text-fill: white; -fx-font-weight: bold;
+                      -fx-background-radius: 10; -fx-padding: 14; -fx-font-size: 16px;"/>
+
+        <Separator/>
+
+        <VBox alignment="CENTER" spacing="10">
+            <Text text="Нет аккаунта?" style="-fx-font-size: 14px; -fx-fill: #666;"/>
+            <Button text="Создать новый аккаунт" onAction="#handleRegister"
+                    style="-fx-background-color: transparent; -fx-text-fill: #667eea;
+                          -fx-font-weight: bold; -fx-border-color: #667eea; -fx-border-width: 2;
+                          -fx-border-radius: 10; -fx-padding: 10 20;"/>
+        </VBox>
+
+    </VBox>
+
+    <!-- Футер -->
+    <VBox alignment="CENTER" spacing="5">
+        <Text text="© 2024 Цветочный магазин"
+              style="-fx-font-size: 12px; -fx-fill: rgba(255,255,255,0.7);"/>
+        <Text text="Все права защищены"
+              style="-fx-font-size: 12px; -fx-fill: rgba(255,255,255,0.5);"/>
+    </VBox>
+
+</VBox>

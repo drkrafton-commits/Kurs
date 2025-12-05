@@ -21,7 +21,7 @@ import java.util.List;
 
 public class PlantsController {
 
-    @FXML private VBox productsContainer;
+    @FXML private VBox plantsContainer;
 
     private UserType currentUser;
     private DbConnection dbConnection = new DbConnection();
@@ -33,19 +33,19 @@ public class PlantsController {
 
     public void setUser(UserType user) {
         this.currentUser = user;
-        if (productsContainer != null) {
+        if (plantsContainer != null) {
             loadPlants();
         }
     }
 
     private void loadPlants() {
         try {
-            List<Product> plants = dbConnection.getProductsByCategory(2); // category_id = 2 для растений
-            productsContainer.getChildren().clear();
+            List<Product> plants = dbConnection.getProductsByCategory(2);
+            plantsContainer.getChildren().clear();
 
             for (Product plant : plants) {
                 HBox productCard = createProductCard(plant);
-                productsContainer.getChildren().add(productCard);
+                plantsContainer.getChildren().add(productCard);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,7 +54,6 @@ public class PlantsController {
     }
 
     private HBox createProductCard(Product product) {
-        // Та же самая реализация, что и в FlowersController
         HBox card = new HBox(15);
         card.setStyle("-fx-background-color: #f8f9fa; -fx-border-color: #e0e0e0; -fx-border-width: 1; " +
                 "-fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;");
@@ -109,7 +108,6 @@ public class PlantsController {
         addToCartButton.setOnAction(e -> handleAddToCart(product));
 
         Button favoriteButton = new Button("♥");
-        favoriteButton.getStyleClass().add("button-outline");
         favoriteButton.setStyle("-fx-background-color: transparent; -fx-text-fill: #ff6b6b; " +
                 "-fx-font-size: 14px; -fx-font-weight: bold; -fx-border-color: #ff6b6b; " +
                 "-fx-border-width: 1; -fx-border-radius: 5; -fx-padding: 8 12;");
@@ -131,7 +129,6 @@ public class PlantsController {
         card.getChildren().addAll(productImageView, infoBox);
         return card;
     }
-
 
     private void handleAddToCart(Product product) {
         if (currentUser == null) {
@@ -162,7 +159,6 @@ public class PlantsController {
                 dbConnection.addToFavorites(currentUser.getUserId(), product.getProductId());
                 showAlert("Избранное", "Товар добавлен в избранное");
             }
-            // Обновляем отображение кнопки
             loadPlants();
         } catch (Exception e) {
             e.printStackTrace();
@@ -173,10 +169,10 @@ public class PlantsController {
     @FXML
     private void handleBack() {
         try {
-            Stage currentStage = (Stage) productsContainer.getScene().getWindow();
+            Stage currentStage = (Stage) plantsContainer.getScene().getWindow();
             currentStage.close();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/main-window.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/main.fxml"));
             Parent root = loader.load();
 
             MainController mainController = loader.getController();
@@ -184,12 +180,9 @@ public class PlantsController {
 
             Stage mainStage = new Stage();
             mainStage.setTitle("Главное меню - Цветочный магазин");
-
-            // ОТКРЫТЬ НА ВЕСЬ ЭКРАН
             mainStage.setMaximized(true);
             mainStage.setMinWidth(1024);
             mainStage.setMinHeight(768);
-
             mainStage.setScene(new Scene(root));
             mainStage.show();
 
@@ -206,13 +199,12 @@ public class PlantsController {
         }
 
         try {
-            Stage currentStage = (Stage) ((Node) productsContainer).getScene().getWindow();
+            Stage currentStage = (Stage) plantsContainer.getScene().getWindow();
             currentStage.close();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/cart-window.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/cart.fxml"));
             Parent root = loader.load();
 
-            // Передаем пользователя в контроллер корзины
             CartController cartController = loader.getController();
             cartController.setUser(currentUser);
 
@@ -238,13 +230,12 @@ public class PlantsController {
         }
 
         try {
-            Stage currentStage = (Stage) ((Node) productsContainer).getScene().getWindow();
+            Stage currentStage = (Stage) plantsContainer.getScene().getWindow();
             currentStage.close();
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/favorites-window.fxml"));
             Parent root = loader.load();
 
-            // Передаем пользователя в контроллер избранного
             FavoritesController favoritesController = loader.getController();
             favoritesController.setUser(currentUser);
 

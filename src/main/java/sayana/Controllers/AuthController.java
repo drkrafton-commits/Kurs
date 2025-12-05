@@ -14,16 +14,15 @@ import javafx.stage.Stage;
 
 public class AuthController {
 
-    @FXML private TextField loginField;
+    @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private Button loginButton;
-    @FXML private Button registerButton;
 
     private DbConnection dbConnection = new DbConnection();
 
     @FXML
     private void handleLogin() {
-        String username = loginField.getText();
+        String username = usernameField.getText();
         String password = passwordField.getText();
 
         try {
@@ -43,7 +42,7 @@ public class AuthController {
             Stage currentStage = (Stage) loginButton.getScene().getWindow();
             currentStage.close();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/main-window.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/main.fxml"));
             Parent root = loader.load();
 
             MainController mainController = loader.getController();
@@ -51,12 +50,9 @@ public class AuthController {
 
             Stage mainStage = new Stage();
             mainStage.setTitle("Главное меню - Цветочный магазин");
-
-            // ОТКРЫТЬ НА ВЕСЬ ЭКРАН
             mainStage.setMaximized(true);
             mainStage.setMinWidth(1024);
             mainStage.setMinHeight(768);
-
             mainStage.setScene(new Scene(root));
             mainStage.show();
 
@@ -67,8 +63,7 @@ public class AuthController {
     }
 
     @FXML
-    private void handleRegistration() {
-        // Создаем поля для ввода данных
+    private void handleRegister() {
         TextField fullNameField = new TextField();
         TextField usernameField = new TextField();
         PasswordField passwordField = new PasswordField();
@@ -130,6 +125,7 @@ public class AuthController {
             String inn = innField.getText().trim();
             String pasport = pasportField.getText().trim();
             Integer birth = Integer.valueOf(birthField.getText().trim());
+            String role = "user";
 
             if (fullName.isEmpty() || username.isEmpty() || password.isEmpty()) {
                 showAlert("Ошибка", "ФИО, логин и пароль обязательны для заполнения");
@@ -142,22 +138,20 @@ public class AuthController {
             }
 
             try {
-                // Проверяем, не существует ли уже такой username
                 if (dbConnection.checkUsernameExists(username)) {
                     showAlert("Ошибка", "Пользователь с таким логином уже существует");
                     return;
                 }
 
-                // Проверяем, не существует ли уже такой email
                 if (!email.isEmpty() && dbConnection.checkEmailExists(email)) {
                     showAlert("Ошибка", "Пользователь с таким email уже существует");
                     return;
                 }
 
-                boolean success = dbConnection.addUser(fullName, username, password, email, phone, inn, pasport, birth);
+                boolean success = dbConnection.addUser(fullName, username, password, email, phone, inn, pasport, birth, role);
                 if (success) {
                     showAlert("Успех", "Пользователь успешно зарегистрирован");
-                    loginField.setText(username);
+                    this.usernameField.setText(username);
                     this.passwordField.clear();
                 } else {
                     showAlert("Ошибка", "Не удалось зарегистрировать пользователя");

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<?import javafx.scene.shape.Rectangle?>
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="sayana.Controllers.OrdersController"
+      style="-fx-background-color: linear-gradient(to bottom, #f9f9f9, #e0f7fa);">
+
+    <!-- Шапка -->
+    <HBox style="-fx-background-color: white; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+        <Button text="← Назад" onAction="#handleBack"
+                style="-fx-background-color: #636e72; -fx-text-fill: white;
+                      -fx-background-radius: 10; -fx-padding: 8 16;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Text text="📦 Мои заказы" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="🔄" onAction="#handleRefresh"
+                style="-fx-background-color: #74b9ff; -fx-text-fill: white;
+                      -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 8 16;"/>
+    </HBox>
+
+    <!-- Контент -->
+    <ScrollPane fitToWidth="true" style="-fx-background: transparent;">
+        <VBox spacing="20" style="-fx-padding: 30;">
+            <Text text="История заказов" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-fill: #2d3436;"/>
+
+            <VBox fx:id="ordersContainer" spacing="15">
+                <!-- Заказы будут добавляться динамически -->
+            </VBox>
+
+            <!-- Информация -->
+            <VBox style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20;" spacing="10">
+                <Text text="💡 Информация" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                <Text text="Статусы заказов:" style="-fx-font-size: 14px; -fx-fill: #666;"/>
+
+                <HBox spacing="20" style="-fx-padding: 10 0;">
+                    <HBox spacing="5">
+                        <Rectangle width="12" height="12" arcWidth="6" arcHeight="6"
+                                   style="-fx-fill: #fdcb6e;"/>
+                        <Text text="Оформляется" style="-fx-font-size: 12px;"/>
+                    </HBox>
+
+                    <HBox spacing="5">
+                        <Rectangle width="12" height="12" arcWidth="6" arcHeight="6"
+                                   style="-fx-fill: #74b9ff;"/>
+                        <Text text="Подтвержден" style="-fx-font-size: 12px;"/>
+                    </HBox>
+
+                    <HBox spacing="5">
+                        <Rectangle width="12" height="12" arcWidth="6" arcHeight="6"
+                                   style="-fx-fill: #00b894;"/>
+                        <Text text="Доставлен" style="-fx-font-size: 12px;"/>
+                    </HBox>
+
+                    <HBox spacing="5">
+                        <Rectangle width="12" height="12" arcWidth="6" arcHeight="6"
+                                   style="-fx-fill: #d63031;"/>
+                        <Text text="Отменен" style="-fx-font-size: 12px;"/>
+                    </HBox>
+                </HBox>
+
+                <Text text="Для получения информации о доставке свяжитесь с поддержкой."
+                      style="-fx-font-size: 12px; -fx-fill: #666;"/>
+            </VBox>
+
+        </VBox>
+    </ScrollPane>
+</VBox>

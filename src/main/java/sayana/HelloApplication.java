@@ -10,7 +10,7 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/auth-window.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/auth.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root, 440, 600);
             primaryStage.setTitle("Авторизация - Цветочный магазин");

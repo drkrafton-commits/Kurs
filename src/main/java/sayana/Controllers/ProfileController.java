@@ -8,37 +8,30 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 
 public class ProfileController {
 
-    @FXML private Text userNameText;
+    @FXML private Label userNameLabel;
     @FXML private TextField fullNameField;
     @FXML private TextField emailField;
     @FXML private TextField phoneField;
-    @FXML private TextField addressField;
 
     private UserType currentUser;
     private DbConnection dbConnection = new DbConnection();
 
     public void setUser(UserType user) {
         this.currentUser = user;
-
-        // Проверяем, инициализированы ли компоненты
-        if (userNameText != null) {
+        if (userNameLabel != null) {
             loadUserData();
-        } else {
-            System.out.println("Компоненты еще не инициализированы, отложим загрузку данных");
         }
     }
 
     @FXML
     public void initialize() {
         System.out.println("ProfileController инициализирован");
-
-        // Если пользователь уже был установлен до initialize()
         if (currentUser != null) {
             loadUserData();
         }
@@ -48,19 +41,14 @@ public class ProfileController {
         if (currentUser != null) {
             System.out.println("Загружаем данные пользователя: " + currentUser.getFullName());
 
-            // Устанавливаем имя пользователя в Text
-            if (userNameText != null) {
-                userNameText.setText(currentUser.getFullName());
-                System.out.println("userNameText установлен в: " + currentUser.getFullName());
-            } else {
-                System.out.println("userNameText не инициализирован!");
+            if (userNameLabel != null) {
+                userNameLabel.setText(currentUser.getFullName());
+                System.out.println("userNameLabel установлен в: " + currentUser.getFullName());
             }
 
-            // Заполняем остальные поля
             fullNameField.setText(currentUser.getFullName());
             emailField.setText(currentUser.getEmail() != null ? currentUser.getEmail() : "");
             phoneField.setText(currentUser.getPhone() != null ? currentUser.getPhone() : "");
-            addressField.setText("г. Москва, ул. Примерная, д. 10, кв. 25");
         }
     }
 
@@ -70,7 +58,7 @@ public class ProfileController {
             Stage currentStage = (Stage) ((Node) fullNameField).getScene().getWindow();
             currentStage.close();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/main-window.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/main.fxml"));
             Parent root = loader.load();
 
             MainController mainController = loader.getController();
@@ -78,12 +66,9 @@ public class ProfileController {
 
             Stage mainStage = new Stage();
             mainStage.setTitle("Главное меню - Цветочный магазин");
-
-            // ОТКРЫТЬ НА ВЕСЬ ЭКРАН
             mainStage.setMaximized(true);
             mainStage.setMinWidth(1024);
             mainStage.setMinHeight(768);
-
             mainStage.setScene(new Scene(root));
             mainStage.show();
 
@@ -104,11 +89,10 @@ public class ProfileController {
                 );
                 if (success) {
                     showAlert("Сохранение", "Данные успешно сохранены!");
-                    // Обновляем данные пользователя
                     currentUser.setFullName(fullNameField.getText());
                     currentUser.setEmail(emailField.getText());
                     currentUser.setPhone(phoneField.getText());
-                    userNameText.setText(currentUser.getFullName());
+                    userNameLabel.setText(currentUser.getFullName());
                 } else {
                     showAlert("Ошибка", "Не удалось сохранить данные");
                 }

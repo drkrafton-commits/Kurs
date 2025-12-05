@@ -12,13 +12,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.scene.Node;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.Image; // ДОБАВИТЬ ЭТОТ ИМПОРТ
+import javafx.scene.image.Image;
 import java.io.File;
 import java.util.List;
 import sayana.models.Address;
@@ -26,9 +26,8 @@ import sayana.models.Address;
 public class CartController {
 
     @FXML private VBox cartItemsContainer;
-    @FXML private Text emptyCartText;
-    @FXML private VBox totalContainer;
-    @FXML private Text totalAmountText;
+    @FXML private Label totalLabel;
+    @FXML private Button checkoutButton;
 
     private UserType currentUser;
     private DbConnection dbConnection = new DbConnection();
@@ -52,22 +51,20 @@ public class CartController {
             List<CartItem> cartItems = dbConnection.getUserCart(currentUser.getUserId());
             cartItemsContainer.getChildren().clear();
 
+            double total = 0;
+
+            for (CartItem item : cartItems) {
+                HBox itemCard = createCartItemCard(item);
+                cartItemsContainer.getChildren().add(itemCard);
+                total += item.getTotalPrice();
+            }
+
+            totalLabel.setText(String.format("Итого: %.2f руб.", total));
+
             if (cartItems.isEmpty()) {
-                emptyCartText.setVisible(true);
-                totalContainer.setVisible(false);
+                checkoutButton.setDisable(true);
             } else {
-                emptyCartText.setVisible(false);
-                totalContainer.setVisible(true);
-
-                double total = 0;
-
-                for (CartItem item : cartItems) {
-                    HBox itemCard = createCartItemCard(item);
-                    cartItemsContainer.getChildren().add(itemCard);
-                    total += item.getTotalPrice();
-                }
-
-                totalAmountText.setText(String.format("%.2f руб.", total));
+                checkoutButton.setDisable(false);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,7 +80,6 @@ public class CartController {
 
         Product product = item.getProduct();
 
-        // Изображение продукта
         ImageView productImageView = new ImageView();
         productImageView.setFitWidth(80);
         productImageView.setFitHeight(80);
@@ -130,18 +126,28 @@ public class CartController {
         return card;
     }
 
+    @FXML
+    private void handleClearCart() {
+        try {
+            dbConnection.clearCart(currentUser.getUserId());
+            showAlert("Корзина", "Корзина очищена");
+            loadCart();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Ошибка", "Не удалось очистить корзину: " + e.getMessage());
+        }
+    }
 
     private void handleRemoveFromCart(CartItem item) {
         try {
             dbConnection.removeFromCart(currentUser.getUserId(), item.getProductId());
             showAlert("Корзина", "Товар удален из корзины");
-            loadCart(); // Перезагружаем корзину
+            loadCart();
         } catch (Exception e) {
             e.printStackTrace();
             showAlert("Ошибка", "Не удалось удалить товар: " + e.getMessage());
         }
     }
-
 
     @FXML
     private void handleCheckout() {
@@ -152,22 +158,12 @@ public class CartController {
                 return;
             }
 
-            // Получаем адрес пользователя (берем первый или запрашиваем новый)
-            List<Address> addresses = dbConnection.getUserAddresses(currentUser.getUserId());
-            int addressId;
-
-            if (addresses.isEmpty()) {
-                // Запрашиваем адрес у пользователя
-                addressId = requestAddress();
-                if (addressId == -1) {
-                    showAlert("Ошибка", "Необходимо указать адрес доставки");
-                    return;
-                }
-            } else {
-                addressId = addresses.get(0).getAddressId();
+            int addressId = requestAddress();
+            if (addressId == -1) {
+                showAlert("Ошибка", "Необходимо указать адрес доставки");
+                return;
             }
 
-            // Создаем заказ
             boolean success = dbConnection.createOrderWithItems(
                     currentUser.getUserId(),
                     addressId,
@@ -177,10 +173,8 @@ public class CartController {
             if (success) {
                 showAlert("Заказ оформлен", "Ваш заказ успешно оформлен! Номер заказа будет отправлен вам на email.");
 
-                // Очищаем корзину (уже сделано в транзакции, но перезагружаем)
                 loadCart();
 
-                // Предлагаем перейти к заказам
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Заказ оформлен");
                 alert.setHeaderText("Заказ успешно оформлен!");
@@ -203,6 +197,7 @@ public class CartController {
             showAlert("Ошибка", "Не удалось оформить заказ: " + e.getMessage());
         }
     }
+
     private int requestAddress() {
         // Временно возвращаем ID 1 для адреса по умолчанию
         return 1;
@@ -213,7 +208,7 @@ public class CartController {
             Stage currentStage = (Stage) cartItemsContainer.getScene().getWindow();
             currentStage.close();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/orders-window.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/orders.fxml"));
             Parent root = loader.load();
 
             OrdersController ordersController = loader.getController();
@@ -235,11 +230,10 @@ public class CartController {
     @FXML
     private void handleBack() {
         try {
-            // ИСПРАВЛЕНО: используем cartItemsContainer вместо productsContainer
             Stage currentStage = (Stage) cartItemsContainer.getScene().getWindow();
             currentStage.close();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/main-window.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/main.fxml"));
             Parent root = loader.load();
 
             MainController mainController = loader.getController();
@@ -247,12 +241,9 @@ public class CartController {
 
             Stage mainStage = new Stage();
             mainStage.setTitle("Главное меню - Цветочный магазин");
-
-            // ОТКРЫТЬ НА ВЕСЬ ЭКРАН
             mainStage.setMaximized(true);
             mainStage.setMinWidth(1024);
             mainStage.setMinHeight(768);
-
             mainStage.setScene(new Scene(root));
             mainStage.show();
 

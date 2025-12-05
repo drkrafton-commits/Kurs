@@ -11,6 +11,7 @@ public class UserType {
     private String inn;
     private String pasport;
     private Integer birth;
+    private String role; // Добавляем поле для роли
 
     // Конструктор для аутентификации
     public UserType(int userId, String fullName, String username, String passwordHash) {
@@ -18,11 +19,13 @@ public class UserType {
         this.fullName = fullName;
         this.username = username;
         this.passwordHash = passwordHash;
+        this.role = "user"; // По умолчанию
     }
 
-    // Полный конструктор
+    // Полный конструктор с ролью
     public UserType(int userId, String fullName, String username, String passwordHash,
-                    String email, String phone, String userInfo, String inn, String pasport, Integer birth) {
+                    String email, String phone, String userInfo, String inn,
+                    String pasport, Integer birth, String role) {
         this.userId = userId;
         this.fullName = fullName;
         this.username = username;
@@ -33,7 +36,15 @@ public class UserType {
         this.inn = inn;
         this.pasport = pasport;
         this.birth = birth;
+        this.role = role;
+    }
 
+    // Геттеры и сеттеры (добавляем для role)
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
+
+    public boolean isAdmin() {
+        return "admin".equals(role);
     }
 
     // Геттеры

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="sayana.Controllers.PlantsController"
+      style="-fx-background-color: linear-gradient(to bottom, #f9f9f9, #e3f2fd);">
+
+    <!-- Шапка -->
+    <HBox style="-fx-background-color: white; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+        <Button text="← Назад" onAction="#handleBack"
+                style="-fx-background-color: #636e72; -fx-text-fill: white;
+                      -fx-background-radius: 10; -fx-padding: 8 16;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Text text="🌿 Растения" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+    </HBox>
+
+    <!-- Контент -->
+    <ScrollPane fitToWidth="true" style="-fx-background: transparent;">
+        <VBox fx:id="plantsContainer" spacing="20"
+              style="-fx-padding: 30; -fx-alignment: center;">
+            <!-- Карточки будут добавляться динамически -->
+        </VBox>
+    </ScrollPane>
+</VBox>

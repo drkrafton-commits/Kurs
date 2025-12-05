@@ -19,7 +19,6 @@ import java.util.List;
 public class OrdersController {
 
     @FXML private VBox ordersContainer;
-    @FXML private Text emptyOrdersText;
 
     private UserType currentUser;
     private DbConnection dbConnection = new DbConnection();
@@ -44,15 +43,12 @@ public class OrdersController {
             ordersContainer.getChildren().clear();
 
             if (orders.isEmpty()) {
-                emptyOrdersText.setVisible(true);
-                emptyOrdersText.setText("У вас пока нет заказов");
-            } else {
-                emptyOrdersText.setVisible(false);
+                ordersContainer.getChildren().add(new Text("У вас пока нет заказов"));
+            }
 
-                for (Order order : orders) {
-                    HBox orderCard = createOrderCard(order);
-                    ordersContainer.getChildren().add(orderCard);
-                }
+            for (Order order : orders) {
+                HBox orderCard = createOrderCard(order);
+                ordersContainer.getChildren().add(orderCard);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,22 +65,18 @@ public class OrdersController {
         VBox infoBox = new VBox(5);
         infoBox.setPrefWidth(500);
 
-        // Номер заказа и дата
         Text orderHeader = new Text("Заказ #" + order.getOrderId() + " • " + order.getFormattedDate());
         orderHeader.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-fill: #000000;");
 
-        // Статус заказа
         String status = order.getStatusText();
         String statusColor = getStatusColor(order.getOrderStatus());
 
         Text statusText = new Text("Статус: " + status);
         statusText.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-fill: " + statusColor + ";");
 
-        // Сумма заказа
         Text amountText = new Text("Сумма: " + String.format("%.2f руб.", order.getTotalAmount()));
         amountText.setStyle("-fx-font-size: 14px; -fx-fill: #000000;");
 
-        // Кнопка детализации (можно будет расширить)
         HBox buttonBox = new HBox(10);
 
         if (order.getOrderStatus().equals("pending")) {
@@ -103,11 +95,11 @@ public class OrdersController {
 
     private String getStatusColor(String status) {
         switch (status) {
-            case "pending": return "#FF9800"; // оранжевый
-            case "confirmed": return "#2196F3"; // синий
-            case "in_progress": return "#4CAF50"; // зеленый
-            case "delivered": return "#9C27B0"; // фиолетовый
-            case "cancelled": return "#F44336"; // красный
+            case "pending": return "#FF9800";
+            case "confirmed": return "#2196F3";
+            case "in_progress": return "#4CAF50";
+            case "delivered": return "#9C27B0";
+            case "cancelled": return "#F44336";
             default: return "#000000";
         }
     }
@@ -117,7 +109,7 @@ public class OrdersController {
             boolean success = dbConnection.updateOrderStatus(order.getOrderId(), "cancelled");
             if (success) {
                 showAlert("Отмена заказа", "Заказ #" + order.getOrderId() + " отменен");
-                loadOrders(); // Обновляем список
+                loadOrders();
             } else {
                 showAlert("Ошибка", "Не удалось отменить заказ");
             }
@@ -133,7 +125,7 @@ public class OrdersController {
             Stage currentStage = (Stage) ordersContainer.getScene().getWindow();
             currentStage.close();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/main-window.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/main.fxml"));
             Parent root = loader.load();
 
             MainController mainController = loader.getController();

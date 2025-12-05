@@ -21,7 +21,7 @@ import java.util.List;
 
 public class FlowersController {
 
-    @FXML private VBox productsContainer;
+    @FXML private VBox flowersContainer;
 
     private UserType currentUser;
     private DbConnection dbConnection = new DbConnection();
@@ -33,20 +33,19 @@ public class FlowersController {
 
     public void setUser(UserType user) {
         this.currentUser = user;
-        if (productsContainer != null) {
+        if (flowersContainer != null) {
             loadFlowers();
         }
     }
 
     private void loadFlowers() {
         try {
-            List<Product> flowers = dbConnection.getProductsByCategory(1); // category_id = 1 для цветов
-            productsContainer.getChildren().clear();
+            List<Product> flowers = dbConnection.getProductsByCategory(1);
+            flowersContainer.getChildren().clear();
 
             for (Product flower : flowers) {
-                // Создаем карточку продукта с изображением
                 HBox productCard = createProductCard(flower);
-                productsContainer.getChildren().add(productCard);
+                flowersContainer.getChildren().add(productCard);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,13 +59,11 @@ public class FlowersController {
                 "-fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;");
         card.setMinHeight(120);
 
-        // Изображение продукта
         ImageView productImageView = new ImageView();
         productImageView.setFitWidth(100);
         productImageView.setFitHeight(100);
         productImageView.setStyle("-fx-background-radius: 10;");
 
-        // Пытаемся загрузить изображение из файла
         if (product.getImageUrl() != null && !product.getImageUrl().isEmpty()) {
             try {
                 File imageFile = new File(product.getImageUrl());
@@ -74,14 +71,13 @@ public class FlowersController {
                     Image image = new Image(imageFile.toURI().toString());
                     productImageView.setImage(image);
                 } else {
-                    // Если файл не найден, используем заглушку
-                    setPlaceholderImage(productImageView);
+                    productImageView.setStyle("-fx-background-color: #D9D9D9; -fx-background-radius: 10;");
                 }
             } catch (Exception e) {
-                setPlaceholderImage(productImageView);
+                productImageView.setStyle("-fx-background-color: #D9D9D9; -fx-background-radius: 10;");
             }
         } else {
-            setPlaceholderImage(productImageView);
+            productImageView.setStyle("-fx-background-color: #D9D9D9; -fx-background-radius: 10;");
         }
 
         VBox infoBox = new VBox(5);
@@ -103,7 +99,6 @@ public class FlowersController {
             infoBox.getChildren().addAll(nameText, priceText);
         }
 
-        // Контейнер для кнопок
         HBox buttonBox = new HBox(10);
         buttonBox.setStyle("-fx-padding: 10 0 0 0;");
 
@@ -113,13 +108,11 @@ public class FlowersController {
         addToCartButton.setOnAction(e -> handleAddToCart(product));
 
         Button favoriteButton = new Button("♥");
-        favoriteButton.getStyleClass().add("button-outline");
         favoriteButton.setStyle("-fx-background-color: transparent; -fx-text-fill: #ff6b6b; " +
                 "-fx-font-size: 14px; -fx-font-weight: bold; -fx-border-color: #ff6b6b; " +
                 "-fx-border-width: 1; -fx-border-radius: 5; -fx-padding: 8 12;");
         favoriteButton.setOnAction(e -> handleToggleFavorite(product));
 
-        // Проверяем, в избранном ли товар
         try {
             if (currentUser != null && dbConnection.isFavorite(currentUser.getUserId(), product.getProductId())) {
                 favoriteButton.setStyle("-fx-background-color: #ff6b6b; -fx-text-fill: white; " +
@@ -135,10 +128,6 @@ public class FlowersController {
 
         card.getChildren().addAll(productImageView, infoBox);
         return card;
-    }
-
-    private void setPlaceholderImage(ImageView imageView) {
-        imageView.setStyle("-fx-background-color: #D9D9D9; -fx-background-radius: 10;");
     }
 
     private void handleAddToCart(Product product) {
@@ -170,7 +159,6 @@ public class FlowersController {
                 dbConnection.addToFavorites(currentUser.getUserId(), product.getProductId());
                 showAlert("Избранное", "Товар добавлен в избранное");
             }
-            // Обновляем отображение кнопки
             loadFlowers();
         } catch (Exception e) {
             e.printStackTrace();
@@ -181,10 +169,10 @@ public class FlowersController {
     @FXML
     private void handleBack() {
         try {
-            Stage currentStage = (Stage) productsContainer.getScene().getWindow();
+            Stage currentStage = (Stage) flowersContainer.getScene().getWindow();
             currentStage.close();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/main-window.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/main.fxml"));
             Parent root = loader.load();
 
             MainController mainController = loader.getController();
@@ -192,12 +180,9 @@ public class FlowersController {
 
             Stage mainStage = new Stage();
             mainStage.setTitle("Главное меню - Цветочный магазин");
-
-            // ОТКРЫТЬ НА ВЕСЬ ЭКРАН
             mainStage.setMaximized(true);
             mainStage.setMinWidth(1024);
             mainStage.setMinHeight(768);
-
             mainStage.setScene(new Scene(root));
             mainStage.show();
 
@@ -214,10 +199,10 @@ public class FlowersController {
         }
 
         try {
-            Stage currentStage = (Stage) productsContainer.getScene().getWindow();
+            Stage currentStage = (Stage) flowersContainer.getScene().getWindow();
             currentStage.close();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/cart-window.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/cart.fxml"));
             Parent root = loader.load();
 
             CartController cartController = loader.getController();
@@ -245,7 +230,7 @@ public class FlowersController {
         }
 
         try {
-            Stage currentStage = (Stage) productsContainer.getScene().getWindow();
+            Stage currentStage = (Stage) flowersContainer.getScene().getWindow();
             currentStage.close();
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/favorites-window.fxml"));

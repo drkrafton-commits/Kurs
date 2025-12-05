@@ -40,15 +40,18 @@ public class DbConnection {
                     rs.getString("user_info"),
                     rs.getString("inn"),
                     rs.getString("pasport"),
-                    rs.getInt("birth")
+                    rs.getInt("birth"),
+                    rs.getString("role") // Добавляем роль
             );
         }
         return null;
     }
 
     // Метод добавления пользователя
-    public boolean addUser(String fullName, String username, String password, String email, String phone, String inn, String pasport, Integer birth) throws SQLException, ClassNotFoundException {
-        String sql = "INSERT INTO users (full_name, username, password_hash, email, phone, inn, pasport, birth) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    public boolean addUser(String fullName, String username, String password, String email,
+                           String phone, String inn, String pasport, Integer birth, String role)
+            throws SQLException, ClassNotFoundException {
+        String sql = "INSERT INTO users (full_name, username, password_hash, email, phone, inn, pasport, birth, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement prst = getDbConnection().prepareStatement(sql);
         prst.setString(1, fullName);
         prst.setString(2, username);
@@ -58,6 +61,7 @@ public class DbConnection {
         prst.setString(6, inn);
         prst.setString(7, pasport);
         prst.setInt(8, birth);
+        prst.setString(9, role); // Добавляем роль
         int rowsAffected = prst.executeUpdate();
         return rowsAffected > 0;
     }
@@ -106,7 +110,8 @@ public class DbConnection {
                     rs.getString("user_info"),
                     rs.getString("inn"),
                     rs.getString("pasport"),
-                    rs.getInt("birth")
+                    rs.getInt("birth"),
+                    rs.getString("role")
             );
         }
         return null;
