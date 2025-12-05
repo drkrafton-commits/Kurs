@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sayana.models.CartItem;
+import sayana.models.Order;
 import sayana.models.Product;
 import sayana.models.UserType;
 import java.sql.*;
@@ -462,6 +463,103 @@ public class DbConnection {
         String sql = "DELETE FROM products WHERE product_id = ?";
         PreparedStatement prst = getDbConnection().prepareStatement(sql);
         prst.setInt(1, productId);
+        int rowsAffected = prst.executeUpdate();
+        return rowsAffected > 0;
+    }
+
+    public boolean createOrderWithItems(int userId, int addressId, List<CartItem> cartItems) throws SQLException, ClassNotFoundException {
+        Connection conn = null;
+        try {
+            conn = getDbConnection();
+            conn.setAutoCommit(false); // Начинаем транзакцию
+
+            // 1. Рассчитываем общую сумму
+            double totalAmount = 0;
+            for (CartItem item : cartItems) {
+                totalAmount += item.getTotalPrice();
+            }
+
+            // 2. Создаем заказ (статус 'pending' - оформляется)
+            String orderSql = "INSERT INTO orders (user_id, address_id, total_amount, order_status) " +
+                    "VALUES (?, ?, ?, 'pending') RETURNING order_id";
+            PreparedStatement orderStmt = conn.prepareStatement(orderSql);
+            orderStmt.setInt(1, userId);
+            orderStmt.setInt(2, addressId);
+            orderStmt.setDouble(3, totalAmount);
+            ResultSet rs = orderStmt.executeQuery();
+
+            if (!rs.next()) {
+                conn.rollback();
+                return false;
+            }
+
+            int orderId = rs.getInt("order_id");
+
+            // 3. Добавляем товары заказа
+            String itemsSql = "INSERT INTO order_items (order_id, product_id, quantity, unit_price) " +
+                    "VALUES (?, ?, ?, ?)";
+            PreparedStatement itemsStmt = conn.prepareStatement(itemsSql);
+
+            for (CartItem item : cartItems) {
+                itemsStmt.setInt(1, orderId);
+                itemsStmt.setInt(2, item.getProductId());
+                itemsStmt.setInt(3, item.getQuantity());
+                itemsStmt.setDouble(4, item.getProduct().getPrice());
+                itemsStmt.addBatch();
+            }
+
+            itemsStmt.executeBatch();
+
+            // 4. Очищаем корзину
+            String clearCartSql = "DELETE FROM cart WHERE user_id = ?";
+            PreparedStatement clearStmt = conn.prepareStatement(clearCartSql);
+            clearStmt.setInt(1, userId);
+            clearStmt.executeUpdate();
+
+            conn.commit(); // Завершаем транзакцию
+            return true;
+
+        } catch (SQLException e) {
+            if (conn != null) {
+                conn.rollback();
+            }
+            throw e;
+        } finally {
+            if (conn != null) {
+                conn.setAutoCommit(true);
+                conn.close();
+            }
+        }
+    }
+
+    // Метод получения заказов пользователя
+    public List<Order> getUserOrders(int userId) throws SQLException, ClassNotFoundException {
+        List<Order> orders = new ArrayList<>();
+        String sql = "SELECT * FROM orders WHERE user_id = ? ORDER BY order_date DESC";
+        PreparedStatement st = getDbConnection().prepareStatement(sql);
+        st.setInt(1, userId);
+        ResultSet rs = st.executeQuery();
+
+        while (rs.next()) {
+            Order order = new Order(
+                    rs.getInt("order_id"),
+                    rs.getInt("user_id"),
+                    rs.getInt("address_id"),
+                    rs.getString("order_status"),
+                    rs.getDouble("total_amount"),
+                    rs.getTimestamp("order_date").toLocalDateTime()
+            );
+            orders.add(order);
+        }
+        return orders;
+    }
+
+    // Метод обновления статуса заказа
+    public boolean updateOrderStatus(int orderId, String newStatus) throws SQLException, ClassNotFoundException {
+        String sql = "UPDATE orders SET order_status = ? WHERE order_id = ?";
+        PreparedStatement prst = getDbConnection().prepareStatement(sql);
+        prst.setString(1, newStatus);
+        prst.setInt(2, orderId);
         int rowsAffected = prst.executeUpdate();
         return rowsAffected > 0;
     }

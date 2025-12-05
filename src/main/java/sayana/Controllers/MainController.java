@@ -79,7 +79,7 @@ public class MainController {
 
     @FXML
     private void handleDeliveryClick() {
-        openWindow("/sayana/delivery-window.fxml", "Доставка - Цветочный магазин");
+        openWindow("/sayana/orders-window.fxml", "Мои заказы - Цветочный магазин");
     }
 
     @FXML
@@ -135,8 +135,8 @@ public class MainController {
                 else if (controller instanceof FavoritesController) {
                     ((FavoritesController) controller).setUser(currentUser);
                 }
-                else if (controller instanceof DeliveryController) {
-                    ((DeliveryController) controller).setUser(currentUser);
+                else if (controller instanceof OrdersController) {
+                    ((OrdersController) controller).setUser(currentUser);
                 }
                 else if (controller instanceof AdminMenuController) {
                     ((AdminMenuController) controller).setUser(currentUser);

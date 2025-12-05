@@ -1,5 +1,7 @@
 package sayana.Controllers;
 
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import sayana.DAO.DbConnection;
 import sayana.models.CartItem;
 import sayana.models.Product;
@@ -19,6 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.Image; // ДОБАВИТЬ ЭТОТ ИМПОРТ
 import java.io.File;
 import java.util.List;
+import sayana.models.Address;
 
 public class CartController {
 
@@ -127,6 +130,7 @@ public class CartController {
         return card;
     }
 
+
     private void handleRemoveFromCart(CartItem item) {
         try {
             dbConnection.removeFromCart(currentUser.getUserId(), item.getProductId());
@@ -138,6 +142,7 @@ public class CartController {
         }
     }
 
+
     @FXML
     private void handleCheckout() {
         try {
@@ -147,13 +152,83 @@ public class CartController {
                 return;
             }
 
-            // Здесь будет логика оформления заказа
-            showAlert("Оформление заказа", "Заказ оформлен успешно!");
-            dbConnection.clearCart(currentUser.getUserId());
-            loadCart(); // Очищаем корзину
+            // Получаем адрес пользователя (берем первый или запрашиваем новый)
+            List<Address> addresses = dbConnection.getUserAddresses(currentUser.getUserId());
+            int addressId;
+
+            if (addresses.isEmpty()) {
+                // Запрашиваем адрес у пользователя
+                addressId = requestAddress();
+                if (addressId == -1) {
+                    showAlert("Ошибка", "Необходимо указать адрес доставки");
+                    return;
+                }
+            } else {
+                addressId = addresses.get(0).getAddressId();
+            }
+
+            // Создаем заказ
+            boolean success = dbConnection.createOrderWithItems(
+                    currentUser.getUserId(),
+                    addressId,
+                    cartItems
+            );
+
+            if (success) {
+                showAlert("Заказ оформлен", "Ваш заказ успешно оформлен! Номер заказа будет отправлен вам на email.");
+
+                // Очищаем корзину (уже сделано в транзакции, но перезагружаем)
+                loadCart();
+
+                // Предлагаем перейти к заказам
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Заказ оформлен");
+                alert.setHeaderText("Заказ успешно оформлен!");
+                alert.setContentText("Хотите перейти к просмотру ваших заказов?");
+
+                ButtonType yesButton = new ButtonType("Да", ButtonBar.ButtonData.YES);
+                ButtonType noButton = new ButtonType("Нет", ButtonBar.ButtonData.NO);
+                alert.getButtonTypes().setAll(yesButton, noButton);
+
+                alert.showAndWait().ifPresent(response -> {
+                    if (response == yesButton) {
+                        openOrdersWindow();
+                    }
+                });
+            } else {
+                showAlert("Ошибка", "Не удалось оформить заказ");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             showAlert("Ошибка", "Не удалось оформить заказ: " + e.getMessage());
+        }
+    }
+    private int requestAddress() {
+        // Временно возвращаем ID 1 для адреса по умолчанию
+        return 1;
+    }
+
+    private void openOrdersWindow() {
+        try {
+            Stage currentStage = (Stage) cartItemsContainer.getScene().getWindow();
+            currentStage.close();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sayana/orders-window.fxml"));
+            Parent root = loader.load();
+
+            OrdersController ordersController = loader.getController();
+            ordersController.setUser(currentUser);
+
+            Stage ordersStage = new Stage();
+            ordersStage.setTitle("Мои заказы - Цветочный магазин");
+            ordersStage.setScene(new Scene(root, 800, 900));
+            ordersStage.setResizable(true);
+            ordersStage.setMinWidth(600);
+            ordersStage.setMinHeight(700);
+            ordersStage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
